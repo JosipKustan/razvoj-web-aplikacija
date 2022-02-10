@@ -91,6 +91,7 @@ GO
 --- Kategorija -------------------------------------
 ----------------------------------------------
 
+
 IF OBJECT_ID('selectKategorija') IS NOT NULL
 BEGIN
     DROP PROCEDURE selectKategorija
@@ -254,7 +255,7 @@ CREATE PROCEDURE selectKupacAllGrad
     @GradID INT
 AS
 BEGIN
-    SELECT TOP 200 * FROM Kupac WHERE GradID=@GradID
+    SELECT TOP 42 * FROM Kupac WHERE GradID=@GradID
 END
 GO
 
@@ -270,17 +271,33 @@ CREATE PROCEDURE updateKupac
     @Ime nvarchar(50),
 	@Prezime nvarchar(50),
 	@Email nvarchar(50),
-	@Telefon nvarchar(25)
+	@Telefon nvarchar(25),
+	@GradID int
 AS
 BEGIN
-    UPDATE Kupac SET Ime = @Ime, Prezime = @Prezime, Email = @Email, Telefon = @Telefon WHERE IDKupac = @IDKupac
+    UPDATE Kupac SET Ime = @Ime, Prezime = @Prezime, Email = @Email, Telefon = @Telefon, GradID=@GradID WHERE IDKupac = @IDKupac
 END
-GO
+go
 
 ----------------------------------------------
 ---POTKATEGORIJA---------------------------------
 ----------------------------------------------
+IF OBJECT_ID('createPotkategorija') IS NOT NULL
+BEGIN
+    DROP PROCEDURE createPotkategorija
+END
+GO
+CREATE PROCEDURE createPotkategorija
+    @KategorijaID int,
+    @Naziv nvarchar(50)
+AS
+BEGIN
+INSERT INTO Potkategorija
+    VALUES (@KategorijaID, @Naziv)
 
+SELECT SCOPE_IDENTITY() AS IDPotkategorija
+END
+GO
 IF OBJECT_ID('selectPotkategorija') IS NOT NULL
 BEGIN
     DROP PROCEDURE selectPotkategorija
@@ -337,6 +354,25 @@ GO
 ----------------------------------------------
 ---PROIZVOD---------------------------------
 ----------------------------------------------
+IF OBJECT_ID('createProizvod') IS NOT NULL
+BEGIN
+    DROP PROCEDURE createProizvod
+END
+GO
+CREATE PROCEDURE createProizvod
+    @Naziv nvarchar(50),
+    @BrojProizvoda nvarchar(25),
+    @Boja nvarchar(15),
+    @MinimalnaKolicinaNaSkladistu int,
+    @CijenaBezPDV money,
+    @PotkategorijaID int
+AS
+BEGIN
+INSERT INTO Proizvod
+    VALUES (@Naziv, @BrojProizvoda, @Boja, @MinimalnaKolicinaNaSkladistu, @CijenaBezPDV, @PotkategorijaID)
+SELECT SCOPE_IDENTITY() AS IDProizvod
+END
+GO
 
 IF OBJECT_ID('selectProizvod') IS NOT NULL
 BEGIN
@@ -394,5 +430,83 @@ CREATE PROCEDURE deleteProizvod
 AS
 BEGIN
    DELETE FROM Proizvod WHERE IDProizvod = @IDProizvod
+END
+GO
+----------------------------------------------
+---RACUN---------------------------------
+----------------------------------------------
+
+IF OBJECT_ID('selectRacun') IS NOT NULL
+BEGIN
+    DROP PROCEDURE selectRacun
+END
+GO
+CREATE PROCEDURE selectRacun
+    @IDRacun INT
+AS
+BEGIN
+    SELECT * FROM Racun WHERE IDRacun = @IDRacun
+END
+GO
+IF OBJECT_ID('selectRacunAll') IS NOT NULL
+BEGIN
+    DROP PROCEDURE selectRacunAll
+END
+GO
+CREATE PROCEDURE selectRacunAll
+AS
+BEGIN
+    SELECT TOP 200 * FROM Racun
+END
+GO
+
+IF OBJECT_ID('selectRacunAllKupac') IS NOT NULL
+BEGIN
+    DROP PROCEDURE selectRacunAllKupac
+END
+GO
+CREATE PROCEDURE selectRacunAllKupac
+    @KupacID INT
+AS
+BEGIN
+    SELECT * FROM Racun WHERE KupacID = @KupacID
+END
+GO
+----------------------------------------------
+---RACUN---------------------------------
+----------------------------------------------
+IF OBJECT_ID('selectStavka') IS NOT NULL
+BEGIN
+    DROP PROCEDURE selectStavka
+END
+GO
+CREATE PROCEDURE selectStavka
+    @IDStavka INT
+AS
+BEGIN
+    SELECT * FROM Stavka WHERE IDStavka = @IDStavka
+END
+GO
+IF OBJECT_ID('selectStavkaAll') IS NOT NULL
+BEGIN
+    DROP PROCEDURE selectStavkaAll
+END
+GO
+CREATE PROCEDURE selectStavkaAll
+AS
+BEGIN
+    SELECT TOP 200 * FROM Stavka
+END
+GO
+IF OBJECT_ID('selectStavkaAllRacun') IS NOT NULL
+BEGIN
+    DROP PROCEDURE selectStavkaAllRacun
+END
+GO
+CREATE PROCEDURE selectStavkaAllRacun
+    @RacunID INT
+AS
+BEGIN
+    SELECT * FROM Stavka WHERE RacunID = @RacunID
 END
 GO

@@ -1,0 +1,114 @@
+﻿@model RWA_Projekt.Models.Racun
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Racun</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Kupac:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Kupac.Ime) @Html.DisplayFor(model => model.Kupac.Prezime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IDRacun)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IDRacun)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DatumIzdavanja)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DatumIzdavanja)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BrojRacuna)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BrojRacuna)
+        </dd>
+
+        <dt>
+            Komercialist:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Komercijalist.Ime) @Html.DisplayFor(model => model.Komercijalist.Prezime)
+        </dd>
+
+        <dt>
+            Kreditna Kartica:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.KreditnaKartica.Tip)
+        </dd>
+
+        <dt>
+            Ukupna cijena
+        </dt>
+
+        <dd>
+            @ViewBag.RacunCijena kn
+        </dd>
+        <br />
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+
+            <div class="panel panel-default">
+                @foreach (var stavka in Model.Stavke)
+                {
+
+                    <div class="panel-heading" role="tab" id="heading_@stavka.IDStavka.ToString()">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#@stavka.IDStavka.ToString()" aria-expanded="false" aria-controls="@stavka.IDStavka.ToString()">
+                                <strong> @stavka.Proizvod.Naziv</strong>
+                                &emsp; [<strong>@stavka.UkupnaCijena kn</strong>]
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="@stavka.IDStavka.ToString()" class="panel-collapse collapse" role="tabpanel" aria-labelledby="@stavka.IDStavka.ToString()">
+                        <div class="panel-body">
+                            @stavka.Proizvod.Potkategorija.Kategorija.Naziv <span class="glyphicon glyphicon-menu-right"></span> @stavka.Proizvod.Potkategorija.Naziv
+                            <br />
+                            <br />
+                            &emsp; Komada:@stavka.Kolicina
+                            <br />
+                            <span class="glyphicon glyphicon-tint"></span> Boja: <strong>@stavka.Proizvod.BojaProizvoda</strong>
+                            <br />
+                            <span class="glyphicon glyphicon-barcode"></span> Broj Proizvoda: <strong>@stavka.Proizvod.BrojProizvoda</strong>
+
+                        </div>
+                    </div>
+                }
+            </div>
+
+
+        </div>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+    $(document).ready(function () {
+        $("div.panel-collapse").first().addClass("in")
+    })
+
+</script>

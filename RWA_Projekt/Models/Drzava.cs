@@ -9,6 +9,7 @@ namespace RWA_Projekt.Models
     {
         public int IDDrzava { get; set; }
         public string Naziv { get; set; }
+        public override string ToString() => Naziv;
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())

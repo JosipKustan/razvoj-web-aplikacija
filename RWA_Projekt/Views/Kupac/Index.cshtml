@@ -7,13 +7,25 @@
 
 <h2>Kupci</h2>
 
+<p>
+    Filtriraj po državi: @Html.DropDownList("Drzave_List", new SelectList(ViewBag.Drzave, "Njemačka"))
+</p>
+<br/>
 @using (Html.BeginForm("Index", "Kupac", FormMethod.Get))
 {
+    <p id="dropDiv">
+        @Html.DropDownList("Gradovi_Hrvatske", new SelectList(ViewBag.GradoviHrvatske))
+        @Html.DropDownList("Gradovi_BiH", new SelectList(ViewBag.GradoviBiH))
+        @Html.DropDownList("Gradovi_Njemacke", new SelectList(ViewBag.GradoviNjemacke))
+        <input id="gradSubmit" type="submit" value="Odaberi" />
+    </p>
+    <br />
     <p>
-        Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        Pretraživanje: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
         <input type="submit" value="Search" />
     </p>
 }
+
 <table class="table">
     <tr>
         <th>
@@ -38,30 +50,30 @@
     </tr>
     @foreach (var item in Model)
     {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.IDKupac)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Ime)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Prezime)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Email)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Telefon)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Grad.Naziv)
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.IDKupac }) |
-        @Html.ActionLink("Details", "Details", new { id = item.IDKupac })
-    </td>
-</tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IDKupac)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prezime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefon)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Grad.Naziv)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IDKupac }) |
+                @Html.ActionLink("Details", "Details", new { id = item.IDKupac })
+            </td>
+        </tr>
     }
 
 </table>
@@ -70,3 +82,67 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 
 @Html.PagedListPager(Model, page => Url.Action("Index",
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+    $(document).ready(function () {
+        var gHrv = $("#Gradovi_Hrvatske").detach();
+        var gBiH = $("#Gradovi_BiH").detach();
+        var gNjem= $("#Gradovi_Njemacke").detach();
+
+        $("#gradSubmit").hide();
+
+        $("#Drzave_List").change(function () {
+            var selectedItem = $("#Drzave_List Option:Selected").text();
+
+            switch (selectedItem) {
+                case "Hrvatska":
+                    $("#Gradovi_BiH").detach();
+                    $("#Gradovi_Njemacke").detach();
+                    $("#dropDiv").prepend(gHrv);
+                    
+                    $("#gradSubmit").show();
+                    break;
+                case "Bosna i Hercegovina":
+                    $("#Gradovi_Njemacke").detach();
+                    $("#Gradovi_Hrvatske").detach();
+                    $("#dropDiv").prepend(gBiH);
+
+                    $("#gradSubmit").show();
+                    break;
+                case "Njemačka":
+                    $("#Gradovi_BiH").detach();
+                    $("#Gradovi_Hrvatske").detach();
+                    $("#dropDiv").prepend(gNjem);
+
+                    $("#gradSubmit").show();
+                    break;
+
+                default:
+                    $("#Gradovi_BiH").detach();
+                    $("#Gradovi_Hrvatske").detach();
+                    $("#Gradovi_Njemacke").detach();
+                    $("#gradSubmit").hide();
+
+                    break;
+            }
+
+            //if (selectedItem==="Hrvatska") {
+            //    $("#Gradovi_BiH").hide();
+            //    $("#Gradovi_Njemacke").hide();
+            //    $("#Gradovi_Hrvatske").show();
+            //}
+            //if (selectedItem === "Bosna i Hercegovina") {
+            //    $("#Gradovi_Njemacke").hide();
+            //    $("#Gradovi_Hrvatske").hide();
+            //    $("#Gradovi_BiH").show();
+            //}
+            //if (selectedItem === "Njemačka") {
+            //    $("#Gradovi_BiH").hide();
+            //    $("#Gradovi_Hrvatske").hide();
+            //    $("#Gradovi_Njemacke").show();
+            //}
+        })
+    })
+   
+</script>

@@ -129,16 +129,28 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\KategorijaController.cs" />
     <Compile Include="Controllers\KupacController.cs" />
+    <Compile Include="Controllers\PotkategorijaController.cs" />
+    <Compile Include="Controllers\ProizvodController.cs" />
+    <Compile Include="Controllers\RacunController.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Drzava.cs" />
+    <Compile Include="Models\Grad.cs" />
+    <Compile Include="Models\HtmlHelpers\CustomHtmlHelper.cs" />
+    <Compile Include="Models\Kategorija.cs" />
+    <Compile Include="Models\Komercialist.cs" />
+    <Compile Include="Models\KreditnaKartica.cs" />
     <Compile Include="Models\Kupac.cs" />
-    <Compile Include="Models\Models.cs" />
+    <Compile Include="Models\LoginData.cs" />
+    <Compile Include="Models\Potkategorija.cs" />
+    <Compile Include="Models\Proizvod.cs" />
+    <Compile Include="Models\Racun.cs" />
+    <Compile Include="Models\Stavka.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repo\Repo.cs" />
     <Compile Include="Repo\RepoSingleton.cs" />
     <Compile Include="Repo\SqlRepo.cs" />
   </ItemGroup>
@@ -147,6 +159,15 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\jquery-ui.structure.css" />
+    <Content Include="Content\jquery-ui.theme.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -160,6 +181,9 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -179,6 +203,22 @@
     <Content Include="Views\Kupac\Index.cshtml" />
     <Content Include="Views\Kupac\Details.cshtml" />
     <Content Include="Views\Kupac\Edit.cshtml" />
+    <Content Include="Views\Kategorija\Index.cshtml" />
+    <Content Include="Views\Kategorija\Edit.cshtml" />
+    <Content Include="Views\Racun\Index.cshtml" />
+    <Content Include="Views\Racun\Details.cshtml" />
+    <Content Include="Views\Kategorija\Create.cshtml" />
+    <Content Include="Views\Kategorija\Delete.cshtml" />
+    <Content Include="Views\Potkategorija\Index.cshtml" />
+    <Content Include="Views\Potkategorija\Details.cshtml" />
+    <Content Include="Views\Potkategorija\Create.cshtml" />
+    <Content Include="Views\Potkategorija\Edit.cshtml" />
+    <Content Include="Views\Potkategorija\Delete.cshtml" />
+    <Content Include="Views\Proizvod\Index.cshtml" />
+    <Content Include="Views\Proizvod\Details.cshtml" />
+    <Content Include="Views\Proizvod\Create.cshtml" />
+    <Content Include="Views\Proizvod\Delete.cshtml" />
+    <Content Include="Views\Proizvod\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

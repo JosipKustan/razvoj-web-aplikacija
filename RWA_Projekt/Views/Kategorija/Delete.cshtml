@@ -1,0 +1,68 @@
+﻿@model RWA_Projekt.Models.Kategorija
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+@using (Ajax.BeginForm("Delete", "Proizvod",
+                       new AjaxOptions
+                       {
+                           UpdateTargetId = "TargetId",
+                           HttpMethod = "post",
+                           OnSuccess = "OnSuccessMethod(data)",
+                           OnFailure = "OnFailureMethod"
+                       }, new { id = "ajaxForm" }))
+{
+    <div>
+        <h4>Kategorija</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.IDKategorija)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.IDKategorija)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Naziv)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Naziv)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color">
+                <input type="submit" value="Delete" class="btn btn-default" /> |
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+        }
+    </div>
+}
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<script>
+    function OnSuccessMethod(data) {
+        if (data.indexOf("field-validation-error") > -1) {
+            alert("Failed deletion- Has references to other objects");
+            return;
+        }
+        var uriBack = "@Request.UrlReferrer.ToString()";
+        console.log(uriBack);
+        alert("Successful action");
+        window.location = uriBack;
+    }
+    function OnFailureMethod(){
+        alert("Failed deletion");
+    }
+</script>

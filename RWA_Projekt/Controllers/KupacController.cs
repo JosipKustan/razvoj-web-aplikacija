@@ -11,6 +11,7 @@ namespace RWA_Projekt.Controllers
 {
     public class KupacController : Controller
     {
+        private const string PLACEHOLDER= "Odaberi državu";
         //List<Kupac> kupacs = new List<Kupac>() {
         //   new Kupac(){
         //       IDKupac=0,
@@ -25,12 +26,26 @@ namespace RWA_Projekt.Controllers
         //    },
         //};
         // GET: Kupac
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, string grad)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page, string grad, string gradovi_BiH, string gradovi_Hrvatske, string gradovi_Njemacke)
         {
+            IEnumerable<Kupac> kupacs = null;
+            string gradQuary=null;
             ViewBag.IdSortParm = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
             ViewBag.ImeSortParm = sortOrder=="ime" ? "ime_desc" : "ime";
             ViewBag.PrezimeSortParm = sortOrder=="prezime" ? "prezime_desc" : "prezime";
+            IList<Drzava> drzave= GetDrzave();
+            ViewBag.Drzave = drzave;
+            try
+            {
+                ViewBag.GradoviHrvatske = GetGradoviDrzave(drzave.First(drzava => drzava.Naziv.Equals("Hrvatska")));
+                ViewBag.GradoviBiH = GetGradoviDrzave(drzave.First(drzava => drzava.Naziv.Equals("Bosna i Hercegovina")));
+                ViewBag.GradoviNjemacke = GetGradoviDrzave(drzave.First(drzava => drzava.Naziv.Equals("Njemačka")));
+                gradQuary = gradovi_BiH + gradovi_Hrvatske + gradovi_Njemacke;
+            }
+            catch (Exception)
+            {
 
+            }
             if (searchString != null)
             {
                 page = 1;
@@ -42,7 +57,14 @@ namespace RWA_Projekt.Controllers
 
             ViewBag.CurrentFilter = searchString;
             //GET: KUPAC
-            var kupacs = Repo.RepoSingleton.GetInstance().GetKupacAll();
+            if (gradQuary!= null && gradQuary.Count() > 0)
+            {
+                kupacs = Repo.RepoSingleton.GetInstance().GetKupacAllGrad(gradQuary);
+            }
+            else
+            {
+                kupacs = Repo.RepoSingleton.GetInstance().GetKupacAll();
+            }
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -70,9 +92,29 @@ namespace RWA_Projekt.Controllers
                     kupacs = kupacs.OrderBy(k => k.IDKupac);
                     break;
             }
-            int pageSize = 20;
+            int pageSize = 50;
             int pageNumber = (page ?? 1);
             return View(kupacs.ToPagedList(pageNumber, pageSize));
+        }
+
+        private IList<Grad> GetGradoviDrzave(Drzava drzava)
+        {
+            return Repo.RepoSingleton.GetInstance().GetGradAllDrzava(drzava.IDDrzava).ToList();
+        }
+
+        private IList<Drzava> GetDrzave()
+        {
+            IList<Drzava> drzave = new List<Drzava>();
+            drzave.Add(new Drzava()
+            {
+                Naziv = PLACEHOLDER
+            });
+            foreach (Drzava drzava in Repo.RepoSingleton.GetInstance().GetDrzavaAll())
+            {
+                drzave.Add(drzava);
+            }
+
+            return drzave;
         }
 
         // GET: Kupac/Details/5
@@ -105,6 +147,9 @@ namespace RWA_Projekt.Controllers
         // GET: Kupac/Edit/5
         public ActionResult Edit(int id)
         {
+
+            ViewBag.Drzave = Repo.RepoSingleton.GetInstance().GetDrzavaAll().ToList();
+            ViewBag.Gradovi = Repo.RepoSingleton.GetInstance().GetGradAll().ToList();
             return View(Repo.RepoSingleton.GetInstance().GetKupac(id));
         }
 
@@ -114,8 +159,6 @@ namespace RWA_Projekt.Controllers
         {
             try
             {
-                Debug.WriteLine(collection);
-                // TODO: Add update logic here
                 
                 Kupac kupac = Repo.RepoSingleton.GetInstance().GetKupac(id);
 
@@ -123,6 +166,9 @@ namespace RWA_Projekt.Controllers
                 kupac.Prezime = collection.Get("Prezime");
                 kupac.Email = collection.Get("Email");
                 kupac.Telefon = collection.Get("Telefon");
+                Grad grad = Repo.RepoSingleton.GetInstance().GetGrad(int.Parse(collection.Get("Grad.IDGrad")));
+                kupac.Grad = grad;
+
                 Repo.RepoSingleton.GetInstance().UpdateKupac(kupac);
                 return RedirectToAction("Index");
             }
@@ -135,6 +181,7 @@ namespace RWA_Projekt.Controllers
         // GET: Kupac/Delete/5
         public ActionResult Delete(int id)
         {
+
             return View(Repo.RepoSingleton.GetInstance().GetKupac(id));
         }
 

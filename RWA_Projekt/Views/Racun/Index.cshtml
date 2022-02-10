@@ -1,0 +1,49 @@
+﻿@model IEnumerable<RWA_Projekt.Models.Racun>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IDRacun)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DatumIzdavanja)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BrojRacuna)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Kupac)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.IDRacun)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DatumIzdavanja)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BrojRacuna)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Kupac.Ime)  @Html.DisplayFor(modelItem => item.Kupac.Prezime)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id = item.IDRacun })
+        </td>
+    </tr>
+}
+
+</table>

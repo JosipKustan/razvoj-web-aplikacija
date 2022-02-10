@@ -1,0 +1,75 @@
+﻿@model IEnumerable<RWA_Projekt.Models.Potkategorija>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@using (Html.BeginForm("Index", "Potkategorija", FormMethod.Get))
+{
+    <div class="ui-widget">
+        Pretraživanje: @Html.TextBox("searchString")
+        <input type="submit" value="Search" />
+        
+    </div>
+}
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IDPotkategorija)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Naziv)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IDPotkategorija)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Naziv)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IDPotkategorija }) |
+                @Html.ActionLink("Details", "Details", new { id = item.IDPotkategorija }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.IDPotkategorija })
+            </td>
+        </tr>
+    }
+
+</table>
+@section scripts
+{
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            var potkategorije = @Html.Raw(Json.Encode(ViewBag.Nazivi));
+
+            console.log(potkategorije);
+            $("#searchString").autocomplete({
+                source: potkategorije
+            })
+        });
+        $(function () {
+            $('form').each(function () {
+                $(this).find('input').keypress(function (e) {
+                    // Enter pressed?
+                    if (e.which == 10 || e.which == 13) {
+                        this.form.submit();
+                    }
+                });
+
+            });
+        });
+    </script>
+}
